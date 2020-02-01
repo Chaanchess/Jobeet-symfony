@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{# 
+ANTIGUA
+{% extends 'base.html.twig' %}
+{% block body %}
+    <table class="table text-center">
+        <tr>
+            <th class="active text-center">City</th>
+            <th class="active text-center">Position</th>
+            <th class="active text-center">Company</th>
+        </tr>
+        {% for job in jobs %}
+            <tr>
+                <td>{{ job.location }}</td>
+                <td>
+                    <a href="{{ path('job.show', {id: job.id}) }}">
+                        {{ job.position }}
+                    </a>
+                </td>
+                <td>{{ job.company }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+#}
+    {% for category in categories %}
+        <h4>
+        <a href="{{ path('category.show', {slug: category.slug}) }}">
+        {{ category.name }}
+        </a>
+        </h4>
+
+        <table class="table text-center">
+            <thead>
+            <tr>
+                <th class="active text-center">City</th>
+                <th class="active text-center">Position</th>
+                <th class="active text-center">Company</th>
+            </tr>
+            </thead>
+
+            <tbody>     
+            {% for job in category.activeJobs|slice(0,max_jobs_on_homepage) %}
+                <tr>
+                    <td>{{ job.location }}</td>
+                    <td>
+                        <a href="{{ path('job.show', {id: job.id}) }}">
+                            {{ job.position }}
+                        </a>
+                    </td>
+                    <td>{{ job.company }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+{% endblock %}
