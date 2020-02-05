@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     max_jobs_on_homepage: 10
+    max_jobs_on_category: 20
 
 services:
     # default configuration for services in *this* file
