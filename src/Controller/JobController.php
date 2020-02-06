@@ -9,6 +9,7 @@ use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use App\Repository\JobRepository;
+use App\Form\JobType;
 
 
 class JobController extends AbstractController{
@@ -52,5 +53,22 @@ class JobController extends AbstractController{
         ]);
 
      }
+
+     /**
+     * Creates a new job entity.
+     *
+     * @Route("/job/create", name="job.create", methods="GET")
+     *
+     * @return Response
+     */
+    public function create() : Response
+    {
+        $job = new Job();
+        $form = $this->createForm(JobType::class, $job);
+
+        return $this->render('job/create.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
 }
 ?>
