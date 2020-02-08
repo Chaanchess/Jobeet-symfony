@@ -6,6 +6,8 @@
 parameters:
     max_jobs_on_homepage: 10
     max_jobs_on_category: 20
+    jobs_directory: '%kernel.project_dir%/public/uploads/jobs'
+    jobs_web_directory: '../public/uploads/jobs/'
 
 services:
     # default configuration for services in *this* file
@@ -24,6 +26,13 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+    App\Service\FileUploader:
+        arguments:
+            $targetDirectory: '%jobs_directory%'
+    App\EventListener\JobUploadListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

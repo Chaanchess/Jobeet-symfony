@@ -4,12 +4,14 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Job;
 use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use App\Repository\JobRepository;
 use App\Form\JobType;
+use App\Service\FileUploader;
 
 
 class JobController extends AbstractController{
@@ -57,15 +59,35 @@ class JobController extends AbstractController{
      /**
      * Creates a new job entity.
      *
-     * @Route("/job/create", name="job.create", methods="GET")
+     * @Route("/job/create", name="job.create", methods={"GET", "POST"})
      *
-     * @return Response
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     *
+     * @return RedirectResponse|Response
      */
-    public function create() : Response
+    public function create(Request $request, EntityManagerInterface $em) : Response
     {
         $job = new Job();
         $form = $this->createForm(JobType::class, $job);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile|null $logoFile */
+            $logoFile = $form->get('logo')->getData();
+
+            if ($logoFile instanceof UploadedFile) {
+                $fileName = $fileUploader->upload($logoFile);
+
+                $job->setLogo($fileName);
+            }
+
+            $em->persist($job);
+            $em->flush();
+
+            return $this->redirectToRoute('job.list');
+        }
+        
         return $this->render('job/create.html.twig', [
             'form' => $form->createView(),
         ]);
