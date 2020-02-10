@@ -4,7 +4,6 @@
     <h1>Job</h1>
 
     <div class="media" style="margin-top: 60px;">
-<<<<<<< HEAD
         {% if job.logo %}
             <div class="media-left">
                 <a href="{{ job.url }}" target="_blank">
@@ -12,15 +11,6 @@
                 </a>
             </div>
         {% endif %} 
-=======
-    {% if job.logo %}
-            <div class="media-left">
-                <a href="{{ job.url }}" target="_blank">
-                    <img class="media-object" style="width:100px; height:100px;" src="{{ asset(jobs_web_directory ~ '/' ~ job.logo) }}">
-                </a>
-            </div>
-    {% endif %}
->>>>>>> 9ce3c58823b920b081e383bc7f4820a1fcbb3710
         <div class="media-body">
             <div class="row">
                 <div class="col-sm-10">
