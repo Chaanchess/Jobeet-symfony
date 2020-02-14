@@ -140,12 +140,14 @@ class JobController extends AbstractController{
     {
         $deleteForm = $this->createDeleteForm($job);
         $publishForm = $this->createPublishForm($job);
+        $extendsForm = $this->createExtendsForm($job);
 
         return $this->render('job/show.html.twig', [
             'job' => $job,
             'hasControlAccess' => true,
             'deleteForm' => $deleteForm->createView(),
             'publishForm' => $publishForm->createView(),
+            'extendsForm' => $extendsForm->createView(),
         ]);
     }
 
@@ -228,6 +230,51 @@ class JobController extends AbstractController{
             $em->flush();
 
             $this->addFlash('notice', 'Your job was published');
+        }
+
+        return $this->redirectToRoute('job.preview', [
+            'token' => $job->getToken(),
+        ]);
+    }
+
+
+    /**
+     * Creates a form to publish a job entity.
+     *
+     * @param Job $job
+     *
+     * @return FormInterface
+     */
+    private function createExtendsForm(Job $job) : FormInterface
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('job.extends', ['token' => $job->getToken()]))
+            ->setMethod('POST')
+            ->getForm();
+    }
+
+    /**
+     * Publish a job entity.
+     *
+     * @Route("job/{token}/extends", name="job.extends", methods="POST", requirements={"token" = "\w+"})
+     *
+     * @param Request $request
+     * @param Job $job
+     * @param EntityManagerInterface $em
+     *
+     * @return Response
+     */
+    public function extends(Request $request, Job $job, EntityManagerInterface $em) : Response
+    {
+        $form = $this->createExtendsForm($job);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $job->setExpiresAt(new \DateTime('+30 days'));
+
+            $em->flush();
+
+            $this->addFlash('notice', 'Has añadido 30 días más al trabajo');
         }
 
         return $this->redirectToRoute('job.preview', [

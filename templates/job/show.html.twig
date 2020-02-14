@@ -2,7 +2,7 @@
 
 {% block body %}
 	{% if hasControlAccess is defined and hasControlAccess %}
-		{% include 'job/control_panel.html.twig' with {'job': job, 'deleteForm': deleteForm, 'publishForm': publishForm} only %}
+		{% include 'job/control_panel.html.twig' with {'job': job, 'deleteForm': deleteForm, 'publishForm': publishForm, 'extendsForm': extendsForm} only %}
 	{% endif %}
 	{% for message in app.flashes('notice') %}
     <div class="alert alert-success" role="alert">

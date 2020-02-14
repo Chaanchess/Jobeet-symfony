@@ -33,7 +33,7 @@ class Category
     /**
      * @var Job[]|ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Job", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="Job", mappedBy="category", cascade={"remove"})
      */
     private $jobs;
 
@@ -129,9 +129,10 @@ class Category
     /**
      * @return Job[]|ArrayCollection
      */
-    public function getActiveJobs(){
-        return $this->jobs->filter(function(Job $job){
-            return $job->getExpiresAt() > new \DateTime();
+    public function getActiveJobs()
+    {
+        return $this->jobs->filter(function(Job $job) {
+            return $job->getExpiresAt() > new \DateTime() && $job->getActivated();
         });
     }
 
