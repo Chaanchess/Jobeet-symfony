@@ -1,43 +1,43 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>{% block title %}Jobeet - Admin{% endblock %}</title>
+	<head>
+		<title>
+			{% block title %}Jobeet - Admin
+			{% endblock %}
+		</title>
 
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> {% block stylesheets %}{% endblock %}{% block javascripts %}{% endblock %}
 
-    {% block stylesheets %}{% endblock %}
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	</head>
+	<body>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">Jobeet Admin</a>
+				</div>
+			</div>
+		</nav>
 
-    {% block javascripts %}{% endblock %}
+		<div class="container">
+			<div class="row">
+				<div class="col-md-2">
+					{% set currentRouteName = app.request.get('_route') %}
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-</head>
-<body>
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">Jobeet Admin</a>
-        </div>
-    </div>
-</nav>
+					<ul class="nav nav-pills nav-stacked nav-pills-stacked-example">
+						<li role="presentation" {% if currentRouteName starts with 'admin.category.' %} class="active" {% endif %}>
+							<a href="{{ path('admin.category.list') }}">Categories</a>
+						</li>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-2">
-            <ul class="nav nav-pills nav-stacked nav-pills-stacked-example">
-                <li role="presentation">
-                    <a href="#">Categories</a>
-                </li>
+						<li role="presentation" {% if currentRouteName starts with 'admin.job.' %} class="active" {% endif %}>
+							<a href="{{ path('admin.job.list') }}">Jobs</a>
+						</li>
+					</ul>
+				</div>
 
-                <li role="presentation">
-                    <a href="#">Jobs</a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="col-md-10">
-            {% block body %}{% endblock %}
-        </div>
-    </div>
-</div>
-</body>
-</html>
+				<div class="col-md-10"> {% block body %}{% endblock %}
+					</div>
+				</div>
+			</div>
+		</body>
+	</html>
